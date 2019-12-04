@@ -233,6 +233,7 @@ NGINX_SSL_PATH=./nginx/ssl/
 
 LARAVEL_HORIZON_INSTALL_SOCKETS=false
 LARAVEL_HORIZON_INSTALL_PHPREDIS=true
+LARAVEL_HORIZON_INSTALL_FFMPEG=false
 
 ### APACHE ################################################
 
