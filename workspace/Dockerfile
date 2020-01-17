@@ -56,7 +56,7 @@ RUN if [ ${CHANGE_SOURCE} = true ]; then \
 
 # always run apt update when start and after add new source list, then clean up at end.
 RUN set -xe; \
-    apt-get update -yqq && \
+    apt-get update --fix-missing -yqq && \
     pecl channel-update pecl.php.net && \
     groupadd -g ${PGID} laradock && \
     useradd -u ${PUID} -g laradock -m laradock -G docker_env && \
@@ -144,6 +144,13 @@ RUN chown -R laradock:laradock /home/laradock/.composer
 # Export composer vendor path
 RUN echo "" >> ~/.bashrc && \
     echo 'export PATH="$HOME/.composer/vendor/bin:$PATH"' >> ~/.bashrc
+
+# update ca-certificates
+COPY ./mk-ca-bundle.pl ./mk-ca-bundle.pl
+RUN perl mk-ca-bundle.pl && \
+ cp ca-bundle.crt /etc/ssl/certs/ca-certificates.crt -fr
+
+RUN update-ca-certificates
 
 USER laradock
 
@@ -347,6 +354,8 @@ USER root
 
 ARG INSTALL_XDEBUG=false
 
+RUN git config --global http.sslVerify false
+
 RUN if [ ${INSTALL_XDEBUG} = true ]; then \
     # Load the xdebug extension only with phpunit commands
     apt-get install -y php${LARADOCK_PHP_VERSION}-xdebug && \
@@ -511,7 +520,7 @@ RUN if [ ${INSTALL_GEARMAN} = true ]; then \
 ARG INSTALL_PHPREDIS=false
 
 RUN if [ ${INSTALL_PHPREDIS} = true ]; then \
-    apt-get update -yqq && \
+    apt-get update -yqq --fix-missing && \
     apt-get install -yqq php-redis \
 ;fi
 
@@ -657,14 +666,18 @@ ENV NVM_DIR /home/laradock/.nvm
 ARG NVM_NODEJS_ORG_MIRROR
 ENV NVM_NODEJS_ORG_MIRROR ${NVM_NODEJS_ORG_MIRROR}
 
+RUN git config --global http.sslVerify false
+
 RUN if [ ${INSTALL_NODE} = true ]; then \
     # Install nvm (A Node Version Manager)
     mkdir -p $NVM_DIR && \
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash \
+    curl -k -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash \
         && . $NVM_DIR/nvm.sh \
         && nvm install ${NODE_VERSION} \
         && nvm use ${NODE_VERSION} \
         && nvm alias ${NODE_VERSION} \
+        && npm --version \
+        && npm config set strict-ssl false \
         && if [ ${NPM_REGISTRY} ]; then \
         npm config set registry ${NPM_REGISTRY} \
         ;fi \
@@ -730,13 +743,13 @@ USER laradock
 ARG INSTALL_YARN=false
 ARG YARN_VERSION=latest
 ENV YARN_VERSION ${YARN_VERSION}
-
+COPY ./yarn-install.sh ./
 RUN if [ ${INSTALL_YARN} = true ]; then \
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && \
     if [ ${YARN_VERSION} = "latest" ]; then \
-        curl -o- -L https://yarnpkg.com/install.sh | bash; \
+        sh yarn-install.sh; \
     else \
-        curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version ${YARN_VERSION}; \
+        sh yarn-install.sh -s -- --version ${YARN_VERSION}; \
     fi && \
     echo "" >> ~/.bashrc && \
     echo 'export PATH="$HOME/.yarn/bin:$PATH"' >> ~/.bashrc \
@@ -768,9 +781,9 @@ RUN set -xe; \
     apt-get -y install sudo wget && \
     # Install the php aerospike extension
     if [ $(php -r "echo PHP_MAJOR_VERSION;") = "5" ]; then \
-      curl -L -o /tmp/aerospike-client-php.tar.gz https://github.com/aerospike/aerospike-client-php5/archive/master.tar.gz; \
+      curl -k -L -o /tmp/aerospike-client-php.tar.gz https://github.com/aerospike/aerospike-client-php5/archive/master.tar.gz; \
     else \
-      curl -L -o /tmp/aerospike-client-php.tar.gz https://github.com/aerospike/aerospike-client-php/archive/master.tar.gz; \
+      curl -k -L -o /tmp/aerospike-client-php.tar.gz https://github.com/aerospike/aerospike-client-php/archive/master.tar.gz; \
     fi \
     && mkdir -p /tmp/aerospike-client-php \
     && tar -C /tmp/aerospike-client-php -zxvf /tmp/aerospike-client-php.tar.gz --strip 1 \
@@ -906,7 +919,7 @@ RUN if [ ${INSTALL_DEPLOYER} = true ]; then \
     # Install the Deployer
     # Using Phar as currently there is no support for laravel 4 from composer version
     # Waiting to be resolved on https://github.com/deployphp/deployer/issues/1552
-    curl -LO https://deployer.org/deployer.phar && \
+    curl -k -LO https://deployer.org/deployer.phar && \
     mv deployer.phar /usr/local/bin/dep && \
     chmod +x /usr/local/bin/dep \
 ;fi
@@ -968,13 +981,14 @@ RUN set -eux; \
       #  The following steps were taken from
       #  https://github.com/Microsoft/msphpsql/wiki/Install-and-configuration
       ###########################################################################
-      curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-      curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
+      curl -k https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
+      curl -k https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
+      cat /etc/apt/sources.list.d/mssql-release.list && \
       apt-get update -yqq && \
       ACCEPT_EULA=Y apt-get install -y msodbcsql17 mssql-tools unixodbc unixodbc-dev libgss3 odbcinst locales && \
       ln -sfn /opt/mssql-tools/bin/sqlcmd /usr/bin/sqlcmd && \
       ln -sfn /opt/mssql-tools/bin/bcp /usr/bin/bcp && \
-      echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
+      echo "zh_CN.UTF-8 UTF-8" > /etc/locale.gen && \
       locale-gen && \
       if [ $(php -r "echo PHP_MINOR_VERSION;") = "0" ]; then \
         pecl install sqlsrv-5.3.0 pdo_sqlsrv-5.3.0 \
@@ -999,7 +1013,7 @@ COPY mc/config.json /root/.mc/config.json
 ARG INSTALL_MC=false
 
 RUN if [ ${INSTALL_MC} = true ]; then\
-    curl -fsSL -o /usr/local/bin/mc https://dl.minio.io/client/mc/release/linux-amd64/mc && \
+    curl -k -fsSL -o /usr/local/bin/mc https://dl.minio.io/client/mc/release/linux-amd64/mc && \
     chmod +x /usr/local/bin/mc \
 ;fi
 
@@ -1030,7 +1044,7 @@ ARG INSTALL_SYMFONY=false
 
 RUN if [ ${INSTALL_SYMFONY} = true ]; then \
   mkdir -p /usr/local/bin \
-  && curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony \
+  && curl -k -LsS https://symfony.com/installer -o /usr/local/bin/symfony \
   && chmod a+x /usr/local/bin/symfony \
   #  Symfony 3 alias
   && echo 'alias dev="php bin/console -e=dev"' >> ~/.bashrc \

@@ -1,15 +1,15 @@
 {
-	"authHost": "localhost",
-	"authEndpoint": "/broadcasting/auth",
-	"clients": [],
-	"database": "redis",
-	"databaseConfig": {
-		"redis": {
-			"port": "6379",
-			"host": "redis"
-		}
-	},
-	"devMode": true,
+  "authHost": "fzz.tinytiger.local",
+  "authEndpoint": "/broadcasting/auth",
+  "clients": [],
+  "database": "redis",
+  "databaseConfig": {
+    "redis": {
+      "port": "6379",
+      "host": "redis"
+    }
+  },
+  "devMode": true,
 	"host": null,
 	"port": "6001",
 	"protocol": "http",
