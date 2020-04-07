@@ -187,6 +187,7 @@ ENV LUA_CPATH="/usr/local/openresty/site/lualib/?.so;/usr/local/openresty/lualib
 RUN rm -rf /usr/local/openresty/nginx/conf/nginx.conf
 COPY sites/*.conf /usr/local/openresty/nginx/conf/sites-available/
 COPY nginx.conf /usr/local/openresty/nginx/conf/
+COPY ssl/default.* /usr/local/openresty/nginx/conf/ssl/
 
 # Set upstream conf and remove the default conf
 RUN echo "upstream php-upstream { server ${PHP_UPSTREAM_CONTAINER}:${PHP_UPSTREAM_PORT}; }" > \
