@@ -55,6 +55,7 @@ RUN if [ ${CHANGE_SOURCE} = true ]; then \
 ;fi
 
 # always run apt update when start and after add new source list, then clean up at end.
+RUN export http_proxy=http://proxy.lfk.qianxin-inc.cn:3128
 RUN set -xe; \
     apt-get update --fix-missing -yqq && \
     pecl channel-update pecl.php.net && \
