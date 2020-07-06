@@ -1,5 +1,5 @@
 {
-  "authHost": "fzz.tinytiger.local",
+  "authHost": "http://yitian-test.qianxin-inc.cn",
   "authEndpoint": "/broadcasting/auth",
   "clients": [],
   "database": "redis",
@@ -10,10 +10,8 @@
     }
   },
   "devMode": true,
-	"host": null,
-	"port": "6001",
-	"protocol": "http",
-	"socketio": {},
-	"sslCertPath": "",
-	"sslKeyPath": ""
+  "host": null,
+  "port": "6001",
+  "protocol": "http",
+  "socketio": {}
 }
