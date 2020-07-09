@@ -681,32 +681,33 @@ ENV NVM_NODEJS_ORG_MIRROR ${NVM_NODEJS_ORG_MIRROR}
 
 RUN git config --global http.sslVerify false
 
+COPY ./nvm-install.sh ./
 RUN if [ ${INSTALL_NODE} = true ]; then \
-    # Install nvm (A Node Version Manager)
-    mkdir -p $NVM_DIR && \
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash \
-        && . $NVM_DIR/nvm.sh \
-        && nvm install ${NODE_VERSION} \
-        && nvm use ${NODE_VERSION} \
-        && nvm alias ${NODE_VERSION} \
-        && npm --version \
-        && npm config set strict-ssl false \
-        && if [ ${NPM_REGISTRY} ]; then \
-        npm config set registry ${NPM_REGISTRY} \
-        ;fi \
-        && if [ ${INSTALL_NPM_GULP} = true ]; then \
-        npm install -g gulp \
-        ;fi \
-        && if [ ${INSTALL_NPM_BOWER} = true ]; then \
-        npm install -g bower \
-        ;fi \
-        && if [ ${INSTALL_NPM_VUE_CLI} = true ]; then \
-        npm install -g @vue/cli \
-        ;fi \
-        && if [ ${INSTALL_NPM_ANGULAR_CLI} = true ]; then \
-        npm install -g @angular/cli \
-        ;fi \
-        && ln -s `npm bin --global` /home/laradock/.node-bin \
+    # Install nvm v0.35.3 (A Node Version Manager)
+    mkdir -p $NVM_DIR \
+    && sh ./nvm-install.sh \
+    && . $NVM_DIR/nvm.sh \
+    && nvm install ${NODE_VERSION} \
+    && nvm use ${NODE_VERSION} \
+    && nvm alias ${NODE_VERSION} \
+    && npm --version \
+    && npm config set strict-ssl false \
+    && if [ ${NPM_REGISTRY} ]; then \
+    npm config set registry ${NPM_REGISTRY} \
+    ;fi \
+    && if [ ${INSTALL_NPM_GULP} = true ]; then \
+    npm install -g gulp \
+    ;fi \
+    && if [ ${INSTALL_NPM_BOWER} = true ]; then \
+    npm install -g bower \
+    ;fi \
+    && if [ ${INSTALL_NPM_VUE_CLI} = true ]; then \
+    npm install -g @vue/cli \
+    ;fi \
+    && if [ ${INSTALL_NPM_ANGULAR_CLI} = true ]; then \
+    npm install -g @angular/cli \
+    ;fi \
+    && ln -s `npm bin --global` /home/laradock/.node-bin \
 ;fi
 
 # Wouldn't execute when added to the RUN statement in the above block
