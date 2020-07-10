@@ -54,7 +54,7 @@ yarn_verify_integrity() {
     return
   fi
 
-  if [ "$YARN_GPG" == "no" ]; then
+  if [ "$YARN_GPG" = "no" ]; then
     printf "$cyan> WARNING: Skipping GPG integrity check!$reset\n"
     return
   fi
