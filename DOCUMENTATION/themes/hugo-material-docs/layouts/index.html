@@ -38,8 +38,8 @@
             </script>
             <!-- ------------------------------------------------------------------------- -->
 
-            <br><br><br>
-            <img src="images/laradock-full-logo.jpg" alt="laradock logo">
+			<br><br><br>
+			<img src="images/laradock-full-logo.jpg" alt="laradock logo">
 
             {{ range where .Site.Pages "Type" "index" }}
             <br><br><br><br><br><br>
@@ -50,18 +50,18 @@
             {{ .Content }}
             {{ end }}
 
-            <aside class="copyright" role="note">
-                {{ with .Site.Params.copyright }}
-                &copy; {{ $.Now.Format "2006" }} {{ . }} &ndash;
-                {{ end }}
-                <br><br>
-                Documentation built with
-                <a href="https://www.gohugo.io" target="_blank">Hugo</a>
-                using the
-                <a href="http://github.com/digitalcraftsman/hugo-material-docs" target="_blank">Material</a> theme,
-                by
-                <a href="https://zalt.me">Mahmoud Zalt</a>.
-            </aside>
+			<aside class="copyright" role="note">
+				{{ with .Site.Params.copyright }}
+				&copy; {{ $.Now.Format "2006" }} {{ . }} &ndash;
+				{{ end }}
+				<br><br>
+				Documentation built with
+				<a href="https://www.gohugo.io" target="_blank">Hugo</a>
+				using the
+				<a href="http://github.com/digitalcraftsman/hugo-material-docs" target="_blank">Material</a> theme,
+				by
+				<a href="https://zalt.me">Mahmoud Zalt</a>.
+			</aside>
 
             <footer class="footer">
                 {{ partial "footer" . }}
