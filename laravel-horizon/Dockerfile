@@ -198,6 +198,18 @@ RUN if [ ${INSTALL_MEMCACHED} = true ]; then \
   && docker-php-ext-enable memcached \
   ;fi
 
+###########################################################################
+# PHP REDIS EXTENSION
+###########################################################################
+
+ARG INSTALL_PHPREDIS=false
+
+RUN if [ ${INSTALL_PHPREDIS} = true ]; then \
+    printf "\n" | pecl install -o -f redis \
+    &&  rm -rf /tmp/pear \
+    &&  docker-php-ext-enable redis \
+;fi
+
 RUN rm /var/cache/apk/* \
   && mkdir -p /var/www
 

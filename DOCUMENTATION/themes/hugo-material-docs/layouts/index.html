@@ -25,30 +25,30 @@
 	<article class="article">
 		<div class="wrapper">
 
-				<!-- ------------------------------------------------------------------------- -->
-				<!-- Google Ads -->
-				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-				<!-- Laradock Horizontal -->
-				<ins class="adsbygoogle"
-					 style="display:inline-block;width:890px;height:100px"
-					 data-ad-client="ca-pub-9826129398689742"
-					 data-ad-slot="2340256024"></ins>
-				<script>
-					(adsbygoogle = window.adsbygoogle || []).push({});
-				</script>
-				<!-- ------------------------------------------------------------------------- -->
+            <!-- ------------------------------------------------------------------------- -->
+            <!-- Google Ads -->
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- Laradock Horizontal -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:890px;height:100px"
+                 data-ad-client="ca-pub-9826129398689742"
+                 data-ad-slot="2340256024"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+            <!-- ------------------------------------------------------------------------- -->
 
 			<br><br><br>
 			<img src="images/laradock-full-logo.jpg" alt="laradock logo">
 
-			{{ range where .Site.Pages "Type" "index" }}
-			<br><br><br><br><br><br>
-			<hr>
-			<br>
-			<h1>{{ .Title }} {{ if .IsDraft }} (Draft){{ end }}</h1>
+            {{ range where .Site.Pages "Type" "index" }}
+            <br><br><br><br><br><br>
+            <hr>
+            <br>
+            <h1>{{ .Title }} {{ if .IsDraft }} (Draft){{ end }}</h1>
 
-			{{ .Content }}
-			{{ end }}
+            {{ .Content }}
+            {{ end }}
 
 			<aside class="copyright" role="note">
 				{{ with .Site.Params.copyright }}
@@ -63,10 +63,10 @@
 				<a href="https://zalt.me">Mahmoud Zalt</a>.
 			</aside>
 
-			<footer class="footer">
-				{{ partial "footer" . }}
-			</footer>
-		</div>
+            <footer class="footer">
+                {{ partial "footer" . }}
+            </footer>
+        </div>
 	</article>
 
 	<div class="results" role="status" aria-live="polite">

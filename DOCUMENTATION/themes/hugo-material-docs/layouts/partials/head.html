@@ -16,25 +16,44 @@
     <link rel="canonical" href="{{ .Permalink }}">
     {{ with .Site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
 
-    <meta property="og:url" content="{{ .Permalink }}">
-    <meta property="og:type" content="website">
-    {{ with .Site.Title }}<meta property="og:site_name" content="{{ . }}">{{ end }}
-    {{ with .Site.Params.description }}<meta property="og:description" content="{{ . }}">{{ end }}
-    {{ with .Site.Title }}<meta property="og:title" content="{{ . }}">{{ end }}
-    {{ with .Site.Params.logo }}<meta property="og:image" content="{{ . | absURL }}">{{ end }}
+      <meta property="og:url" content="{{ .Permalink }}">
+      <meta property="og:type" content="website">
+      {{ with .Site.Title }}
+      <meta property="og:site_name" content="{{ . }}">
+      {{ end }}
+      {{ with .Site.Params.description }}
+      <meta property="og:description" content="{{ . }}">
+      {{ end }}
+      {{ with .Site.Title }}
+      <meta property="og:title" content="{{ . }}">
+      {{ end }}
+      {{ with .Site.Params.logo }}
+      <meta property="og:image" content="{{ . | absURL }}">
+      {{ end }}
 
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@Mahmoud_Zalt">
-    {{ with .Site.Title }}<meta name="twitter:title" content="{{ . }}">{{ end }}
-    {{ with .Site.Params.description }}<meta name="twitter:description" content="{{ . }}">{{ end }}
-    {{ with .Site.Params.logo }}<meta name="twitter:image" content="{{ . | absURL }}">{{ end }}
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:site" content="@Mahmoud_Zalt">
+      {{ with .Site.Title }}
+      <meta name="twitter:title" content="{{ . }}">
+      {{ end }}
+      {{ with .Site.Params.description }}
+      <meta name="twitter:description" content="{{ . }}">
+      {{ end }}
+      {{ with .Site.Params.logo }}
+      <meta name="twitter:image" content="{{ . | absURL }}">
+      {{ end }}
 
-    {{ with .Site.Title }}<meta name="apple-mobile-web-app-title" content="{{ . }}">{{ end }}
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+      {{ with .Site.Title }}
+      <meta name="apple-mobile-web-app-title" content="{{ . }}">
+      {{ end }}
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <link rel="shortcut icon" type="image/x-icon" href="{{ with .Site.Params.favicon }}{{ . | absURL }}{{ else }}{{ "images/favicon.ico" | absURL }}{{ end }}">
-    <link rel="icon" type="image/x-icon" href="{{ with .Site.Params.favicon }}{{ . | absURL }}{{ else }}{{ "images/favicon.ico" | absURL }}{{ end }}">
+      <link rel="shortcut icon" type="image/x-icon" href="{{ with .Site.Params.favicon }}{{ . | absURL }}{{ else }}{{ "
+            images
+      /favicon.ico" | absURL }}{{ end }}">
+      <link rel="icon" type="image/x-icon" href="{{ with .Site.Params.favicon }}{{ . | absURL }}{{ else }}{{ " images
+      /favicon.ico" | absURL }}{{ end }}">
 
 <!--    <link rel="icon" type="image/png" sizes="192x192"  href="images/favicons/android-icon-192x192.png">-->
 <!--    <link rel="icon" type="image/png" sizes="32x32" href="images/favicons/favicon-32x32.png">-->
@@ -72,8 +91,10 @@
       }
     </style>
 
-    <link rel="stylesheet" href="{{ "stylesheets/application.css" | absURL }}">
-    <link rel="stylesheet" href="{{ "stylesheets/temporary.css" | absURL }}">
+      <link rel="stylesheet" href="{{ " stylesheets
+      /application.css" | absURL }}">
+      <link rel="stylesheet" href="{{ " stylesheets
+      /temporary.css" | absURL }}">
     <link rel="stylesheet" href="{{ "stylesheets/palettes.css" | absURL }}">
     <link rel="stylesheet" href="{{ with .Site.Params.highlight_css }}{{ . | absURL }}{{ else }}{{ "stylesheets/highlight/highlight.css" | absURL }}{{ end }}">
 
