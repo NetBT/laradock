@@ -37,6 +37,8 @@ volumes:
     driver: ${VOLUMES_DRIVER}
   caddy:
     driver: ${VOLUMES_DRIVER}
+  meilisearch:
+    driver: ${VOLUMES_DRIVER}
   elasticsearch:
     driver: ${VOLUMES_DRIVER}
   mosquitto:
@@ -812,6 +814,17 @@ services:
         - frontend
         - backend
 
+### MeiliSearch ##########################################
+    meilisearch:
+      image: getmeili/meilisearch:latest
+      volumes: 
+        - ${DATA_PATH_HOST}/meilisearch:/var/lib/meilisearch
+      ports: 
+        - "${MEILISEARCH_HOST_PORT}:7700"
+      networks: 
+        - frontend
+        - backend
+
 ### ElasticSearch ########################################
     elasticsearch:
       build:
@@ -1033,6 +1046,8 @@ services:
     laravel-echo-server:
       build:
         context: ./laravel-echo-server
+        args:
+          - CHANGE_SOURCE=${CHANGE_SOURCE}
       volumes:
         - ./laravel-echo-server/laravel-echo-server.json:/app/laravel-echo-server.json:ro
       ports:
